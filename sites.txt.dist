@@ -1,0 +1,6 @@
+# Copy this file to sites.txt
+# Populate the file with one site per line,
+# where each site is represented by a base domain name.
+# The scanner will scan all sites in this file, by
+# checking the content of the URL https://[LINE]/custom-error/status
+# Blank lines and lines beginning with # will be ignored.

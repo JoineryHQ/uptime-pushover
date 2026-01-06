@@ -1,0 +1,22 @@
+# Copy this file to config.sh and edit per comments below.
+
+# Pushover app API token/key
+PUSHOVER_TOKEN=""
+
+# Pushover User Key
+PUSHOVER_USER=""
+
+# Messages not acknowledged more than this many seconds ago
+# will not be re-sent.
+MAX_ACK_AGE=$(( 5 * 60 )); # 5 min
+
+# "Site status" URL path to inspect on each site.
+# Example: "site-status" -- scan will inspect content of "https://[SITE-DOMAIN-NAME]/site-status"
+HEALTH_URL_PATH=""
+
+# Expected good-health output of HEALTH_URL_PATH.
+# Sites not reporing exactly and only this string at HEALTH_URL_PATH will be
+# assumed to be in poor health, resulting in an alert for that site.
+# e.g. "All is well."
+HEALTH_URL_EXPECTED_STRING=""
+

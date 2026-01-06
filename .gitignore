@@ -1,0 +1,6 @@
+config.sh
+sites.txt
+receipts/*
+!receipts/README.txt
+alert-logs
+
