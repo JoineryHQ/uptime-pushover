@@ -17,6 +17,8 @@ fi
 HANDLE="$1"
 BODY="$2"
 
+RECEIPT_FILE="$MYDIR/receipts/receipt.${HANDLE}"
+
 function sendMessage() {
   TITLE="Website alert"
   MESSAGE="$BODY"
@@ -35,7 +37,7 @@ function sendMessage() {
   # Get receipt id if possible, or else (error case) just return.
   RECEIPT_ID="$(echo "$JSON" | jq -er '.receipt' 2>/dev/null)" || return
   # Store the receipt-id so we can query it on future runs.
-  echo $RECEIPT_ID > $MYDIR/receipts/$HANDLE
+  echo $RECEIPT_ID > $RECEIPT_FILE
 }
 
 mkdir -p "$MYDIR/receipts";
@@ -44,7 +46,6 @@ mkdir -p "$MYDIR/receipts";
 # check the status of that receipt. Un-acknowledged
 # messages, or messages acknowledged only recently,
 # will not be re-sent.
-RECEIPT_FILE="$MYDIR/receipts/$HANDLE"
 if [[ -f $RECEIPT_FILE ]]; then
   OLD_RECEIPT_ID=$(cat $RECEIPT_FILE);
   RECEIPT_STATUS_JSON=$(curl -s "https://api.pushover.net/1/receipts/${OLD_RECEIPT_ID}.json?token=${PUSHOVER_TOKEN}")
