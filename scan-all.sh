@@ -55,18 +55,6 @@ function scanSite() {
 
   rm -f "$TMP_BODY" "$TMP_ERR"
 
-  {
-    echo "timestamp: ${TS}"
-    echo "site: $HEALTH_DOMAIN_NAME"
-    echo "url: $URL"
-    echo "curl_exit_status: $CURL_EXIT_STATUS"
-    echo "${HTTP_META:-http=(none)}"
-    echo "----- stderr -----"
-    [[ -n "$ERR" ]] && echo "$ERR" || echo "(none)"
-    echo "----- body -----"
-    [[ -n "$BODY" ]] && echo "$BODY" || echo "(none)"
-  } >"$LOGFILE"
-
 
   local STATUS_DESC;
   if [[ $CURL_EXIT_STATUS -ne 0 ]]; then
@@ -75,6 +63,20 @@ function scanSite() {
     STATUS_DESC="bad response"
   fi
   if [[ -n "$STATUS_DESC" ]]; then
+    # We'll alert; therefore we'll log.
+    {
+      echo "timestamp: ${TS}"
+      echo "site: $HEALTH_DOMAIN_NAME"
+      echo "url: $URL"
+      echo "curl_exit_status: $CURL_EXIT_STATUS"
+      echo "${HTTP_META:-http=(none)}"
+      echo "----- stderr -----"
+      [[ -n "$ERR" ]] && echo "$ERR" || echo "(none)"
+      echo "----- body -----"
+      [[ -n "$BODY" ]] && echo "$BODY" || echo "(none)"
+    } >"$LOGFILE"
+
+    # Alert.
     alert $HEALTH_DOMAIN_NAME "https://$HEALTH_DOMAIN_NAME $STATUS_DESC (see $(basename $LOGFILE))"
   fi
 }
